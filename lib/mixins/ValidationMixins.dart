@@ -29,12 +29,21 @@ class ValidationMixin{
     }
     return null;
   }
-  
-  String validateAddress(String value){
-    if(value.length >= 10){
-      return null;
+
+  String validateUser(Map value){
+
+    if(value["email"]=="lukevs@gmail.com"){
+
+      if(value["password"]=="miri<3pin@a"){
+
+        return null;
+      }
+
+      return "Incorrect Password";
     }
-    return "Address is too short.";
+
+    return "Email not found";
+
   }
   
 }

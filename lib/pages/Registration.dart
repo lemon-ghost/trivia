@@ -23,12 +23,21 @@ class _RegistrationState extends State<Registration> with ValidationMixin {
   final TextEditingController passwordTextController = TextEditingController();
   final TextEditingController confirmPasswordTextController = TextEditingController();
   final TextEditingController birthDateTextController = TextEditingController();
-  bool obscureText = false;
+  bool obscureText = true;
   bool visibility = false;
 
   String user;
   DateTime _dateTime;
   String _travelDate;
+
+  
+  Map newUser = {
+    "email": "lukevs@gmail.com",
+    "password": "miri<3pin@a",
+    "fname": "Luke",
+    "lname": "Villabado",
+    "dob": "11/11/2001"
+  };
 
   void initState() {
     super.initState();
@@ -178,7 +187,9 @@ class _RegistrationState extends State<Registration> with ValidationMixin {
     if (formKey.currentState.validate()) {
       if (validateSamePassword(
           passwordTextController.text, confirmPasswordTextController.text)) {
-        Navigator.pushNamed(context, Dashboard.routeName);
+        makenewAcc();
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Dashboard(user: this.newUser)));
+        //Navigator.pushNamed(context, Dashboard.routeName);
         visibility = false;
       } else {
         print("yes?");
@@ -201,6 +212,18 @@ class _RegistrationState extends State<Registration> with ValidationMixin {
         });
       }
     }
+  }
+
+  void makenewAcc(){
+    setState(() {
+      newUser = {
+        "email": emailTextController.text,
+        "password": passwordTextController.text,
+        "fname": firstNameTextController.text,
+        "lname": lastNameTextController.text,
+        "dob": birthDateTextController.text
+      };
+    });
   }
 
   void navigateToLogin(BuildContext context) {
