@@ -27,7 +27,18 @@ class _LoginState extends State<Login> with ValidationMixin {
     "password": "miri<3pin@a",
     "fname": "Luke",
     "lname": "Villabado",
-    "dob": "11-11-2001"
+    "pic": "assets/images/012-eagle.png",
+    "dob": "11-11-2001",
+    "scores":{
+      "General Knowledge": 130,
+      "Music": 180,
+      "Film": 235,
+      "Video Games": 140,
+      "History": 95,
+      "Science & Nature": 115,
+      "Mythology": 195,
+      "Animals": 165
+    }
   };
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();

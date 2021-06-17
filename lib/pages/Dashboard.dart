@@ -55,7 +55,7 @@ class _DashboardState extends State<Dashboard> {
    Widget getTab() {
 
     if (_selectedTab == _SelectedTab.scoreboard) {
-      return Scoreboard();
+      return Scoreboard(user: this.user);
     }
 
     if (_selectedTab == _SelectedTab.profile) {
