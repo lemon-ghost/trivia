@@ -6,6 +6,7 @@ import 'package:trivia/widgets/CustomTextFormField.dart';
 import 'package:trivia/widgets/PasswordField.dart';
 import 'package:trivia/widgets/PrimaryButton.dart';
 import 'package:trivia/widgets/SecondaryButton.dart';
+import 'package:trivia/utils/DummyData.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -22,24 +23,9 @@ class _LoginState extends State<Login> with ValidationMixin {
 
   _LoginState({this.fromForgot});
 
-  Map user = {
-    "email": "lukevs@gmail.com",
-    "password": "miri<3pin@a",
-    "fname": "Luke",
-    "lname": "Villabado",
-    "pic": "assets/images/012-eagle.png",
-    "dob": "11-11-2001",
-    "scores":{
-      "General Knowledge": 130,
-      "Music": 180,
-      "Film": 235,
-      "Video Games": 140,
-      "History": 95,
-      "Science & Nature": 115,
-      "Mythology": 195,
-      "Animals": 165
-    }
-  };
+  DummyData temp = new DummyData();
+
+  Map user;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailTextController = TextEditingController();
@@ -51,17 +37,25 @@ class _LoginState extends State<Login> with ValidationMixin {
 
   @override
     void initState() {
-      // TODO: implement initState
       super.initState();
-      fromRoom();//inie added this
+      fromFor();
+      setUser();
   }
 
-  void fromRoom(){//inie added this
+  void fromFor(){
     var x = (fromForgot==true)? true:false;
     setState(() {
       bisible=x;
     });
   }
+
+  void setUser(){
+    var x = temp.defaultUser();
+    setState(() {
+      user=x;
+    });
+  }
+    
     
 
   Widget build(BuildContext context) {

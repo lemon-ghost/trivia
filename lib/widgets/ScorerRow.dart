@@ -7,17 +7,20 @@ class ScorerRow extends StatelessWidget {
   final String name;
   final int score;
 
-  ScorerRow(
-      {@required this.rank,
-      @required this.path,
-      @required this.name,
-      @required this.score,
-      }
-    );
+  ScorerRow({
+    @required this.rank,
+    @required this.path,
+    @required this.name,
+    @required this.score,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Constants.scaffdarker,
+      ),
       height: 40.0,
       padding: EdgeInsets.all(5.0),
       margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
@@ -29,6 +32,7 @@ class ScorerRow extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              SizedBox(width: 15.0),
               Container(
                 child: Text(rank.toString()),
               ),
@@ -58,7 +62,7 @@ class ScorerRow extends StatelessWidget {
 
           //score
           Container(
-            padding: EdgeInsets.only(left: 10.0, right: 5.0),
+            padding: EdgeInsets.only(left: 10.0, right: 5.0, top: 5.0),
             child: Text(score.toString()),
           ),
         ],

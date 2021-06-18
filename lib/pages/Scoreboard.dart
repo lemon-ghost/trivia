@@ -117,7 +117,7 @@ class _ScoreboardState extends State<Scoreboard> with DummyData {
 
   Widget notChosenCat() {
     return Container(
-      padding: EdgeInsets.only(top: 5.0),
+      padding: EdgeInsets.all(15.0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.0),
           border: Border.all(
@@ -126,7 +126,7 @@ class _ScoreboardState extends State<Scoreboard> with DummyData {
           )),
       height: MediaQuery.of(context).size.height * 0.47,
       child: Center(
-        child: Text("No one has played this quiz yet.\n\nPlay now and get your name on the scoreboard!",
+        child: Text("Pick a Category and see your place on the Scoreboard!",
             textAlign: TextAlign.center,
           )
         ),

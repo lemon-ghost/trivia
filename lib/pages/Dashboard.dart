@@ -34,7 +34,7 @@ class _DashboardState extends State<Dashboard> {
   Widget _build(BuildContext context) {
     print(user);
     return Scaffold(
-      backgroundColor: Constants.primaryColor,
+      //backgroundColor: Constants.primaryColor,
       //key: _scaffoldkey,
       appBar: _selectedTab == _SelectedTab.profile ? null : AppBar(
         leading: null,

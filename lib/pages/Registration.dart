@@ -221,7 +221,18 @@ class _RegistrationState extends State<Registration> with ValidationMixin {
         "password": passwordTextController.text,
         "fname": firstNameTextController.text,
         "lname": lastNameTextController.text,
-        "dob": birthDateTextController.text
+        "dob": birthDateTextController.text,
+        "pic": "assets/images/050-fox.png",
+        "scores":{
+          "General Knowledge": 0,
+          "Music": 0,
+          "Film": 0,
+          "Video Games": 0,
+          "History": 0,
+          "Science & Nature": 0,
+          "Mythology": 0,
+          "Animals": 0
+        }
       };
     });
   }
