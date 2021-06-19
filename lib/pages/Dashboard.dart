@@ -15,18 +15,33 @@ enum _SelectedTab { home, scoreboard, profile }
 class Dashboard extends StatefulWidget {
   static const String routeName = "dashboard";
   Map user={};
+  bool fromProf=false;
 
-  Dashboard({this.user});
+  Dashboard({this.user,this.fromProf});
   @override
-  _DashboardState createState() => _DashboardState(user: this.user);
+  _DashboardState createState() => _DashboardState(user: this.user,fromProf: this.fromProf);
 }
 
 class _DashboardState extends State<Dashboard> {
+  bool fromProf;
   Map user={};
-  var _selectedTab = _SelectedTab.home;
+  var _selectedTab;
 
-  _DashboardState({this.user});
+  _DashboardState({this.user,this.fromProf});
+
   @override
+    void initState() {
+      // TODO: implement initState
+      super.initState();
+      setTab();
+    }
+
+  setTab(){
+    setState(() {
+      _selectedTab =(fromProf)?_SelectedTab.profile:_SelectedTab.home;
+    });
+  }
+  
   Widget build(BuildContext context) {
     return user.isEmpty ? Loading() : _build(context);
   }
@@ -36,7 +51,7 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       //backgroundColor: Constants.primaryColor,
       //key: _scaffoldkey,
-      appBar: _selectedTab == _SelectedTab.profile ? null : AppBar(
+      appBar: AppBar(
         leading: null,
         elevation: 0,
         centerTitle: true,
@@ -59,7 +74,7 @@ class _DashboardState extends State<Dashboard> {
     }
 
     if (_selectedTab == _SelectedTab.profile) {
-      return Profile();
+      return Profile(user: this.user);
     }
 
     if (_selectedTab == _SelectedTab.home) return Home();

@@ -152,7 +152,7 @@ class _LoginState extends State<Login> with ValidationMixin {
 
     if (formKey.currentState.validate()) {
       if (validateUser(value) == null) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Dashboard(user: this.user)));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Dashboard(user: this.user,fromProf: false)));
         //Navigator.pushNamed(context, Dashboard.routeName, arguments: {user});
         visibility = false;
       } else {

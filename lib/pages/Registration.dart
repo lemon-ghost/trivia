@@ -31,13 +31,7 @@ class _RegistrationState extends State<Registration> with ValidationMixin {
   String _travelDate;
 
   
-  Map newUser = {
-    "email": "lukevs@gmail.com",
-    "password": "miri<3pin@a",
-    "fname": "Luke",
-    "lname": "Villabado",
-    "dob": "11/11/2001"
-  };
+  Map newUser = {};
 
   void initState() {
     super.initState();
@@ -188,7 +182,7 @@ class _RegistrationState extends State<Registration> with ValidationMixin {
       if (validateSamePassword(
           passwordTextController.text, confirmPasswordTextController.text)) {
         makenewAcc();
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Dashboard(user: this.newUser)));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Dashboard(user: this.newUser,fromProf: false)));
         //Navigator.pushNamed(context, Dashboard.routeName);
         visibility = false;
       } else {
@@ -222,7 +216,7 @@ class _RegistrationState extends State<Registration> with ValidationMixin {
         "fname": firstNameTextController.text,
         "lname": lastNameTextController.text,
         "dob": birthDateTextController.text,
-        "pic": "assets/images/050-fox.png",
+        "pic": "assets/images/026-penguin.png",
         "scores":{
           "General Knowledge": 0,
           "Music": 0,

@@ -8,7 +8,7 @@ class DummyData {
     "password": "miri<3pin@a",
     "fname": "Luke",
     "lname": "Villabado",
-    "pic": "assets/images/012-eagle.png",
+    "pic": "assets/images/031-meerkat.png",
     "dob": "11-11-2001",
     "scores":{
       "General Knowledge": 130,
@@ -42,20 +42,20 @@ class DummyData {
     });
     
     toReturn.add({
-      "pic": "assets/images/avatar1.png",
+      "pic": "assets/images/005-parrot.png",
       "name": "Player Three",
       "score": 150,
     });
     
     toReturn.add({
-      "pic": "assets/images/avatar2.png",
+      "pic": "assets/images/013-crocodile.png",
       "name": "Player Four",
       "score": 100,
     });
     
     toReturn.add({
-      "pic": "assets/images/avatar2.png",
-      "name": "Player Four",
+      "pic": "assets/images/032-snake.png",
+      "name": "Player Five",
       "score": 50,
     });
     

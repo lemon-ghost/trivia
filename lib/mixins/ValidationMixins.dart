@@ -33,6 +33,15 @@ class ValidationMixin{
     return null;
   }
 
+  String validateName2(String value){
+    if(value.isNotEmpty && value.length <= 3){
+      return "Name is too short.";
+    }else if(value.isNotEmpty && value.length >= 10){
+      return "Name is too long.";
+    }
+    return null;
+  }
+
 //dummy data
   String validateUser(Map value){
     Map user = temp.defaultUser();
