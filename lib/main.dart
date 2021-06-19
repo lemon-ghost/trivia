@@ -6,7 +6,7 @@ void main() {
   runApp(MaterialApp(
     theme: ThemeData(
       brightness: Brightness.light,
-      backgroundColor: Color.fromRGBO(251, 232, 166, 1),
+      //backgroundColor: Color.fromRGBO(251, 232, 166, 1),
       primaryColor: Color.fromRGBO(48, 60, 108, 1),
       accentColor: Color.fromRGBO(210, 253, 255, 1),
       textTheme: TextTheme(

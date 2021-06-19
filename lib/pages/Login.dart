@@ -6,6 +6,7 @@ import 'package:trivia/widgets/CustomTextFormField.dart';
 import 'package:trivia/widgets/PasswordField.dart';
 import 'package:trivia/widgets/PrimaryButton.dart';
 import 'package:trivia/widgets/SecondaryButton.dart';
+import 'package:trivia/utils/DummyData.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -22,13 +23,9 @@ class _LoginState extends State<Login> with ValidationMixin {
 
   _LoginState({this.fromForgot});
 
-  Map user = {
-    "email": "lukevs@gmail.com",
-    "password": "miri<3pin@a",
-    "fname": "Luke",
-    "lname": "Villabado",
-    "dob": "11-11-2001"
-  };
+  DummyData temp = new DummyData();
+
+  Map user;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailTextController = TextEditingController();
@@ -40,17 +37,25 @@ class _LoginState extends State<Login> with ValidationMixin {
 
   @override
     void initState() {
-      // TODO: implement initState
       super.initState();
-      fromRoom();//inie added this
+      fromFor();
+      setUser();
   }
 
-  void fromRoom(){//inie added this
+  void fromFor(){
     var x = (fromForgot==true)? true:false;
     setState(() {
       bisible=x;
     });
   }
+
+  void setUser(){
+    var x = temp.defaultUser();
+    setState(() {
+      user=x;
+    });
+  }
+    
     
 
   Widget build(BuildContext context) {
@@ -147,7 +152,7 @@ class _LoginState extends State<Login> with ValidationMixin {
 
     if (formKey.currentState.validate()) {
       if (validateUser(value) == null) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Dashboard(user: this.user)));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Dashboard(user: this.user,fromProf: false)));
         //Navigator.pushNamed(context, Dashboard.routeName, arguments: {user});
         visibility = false;
       } else {
