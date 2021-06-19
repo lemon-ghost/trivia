@@ -45,7 +45,33 @@ class _DashboardState extends State<Dashboard> {
           style: GoogleFonts.poppins(
              fontWeight: FontWeight.w500,
           )
-        )
+        ),
+        bottom: _selectedTab == _SelectedTab.home? PreferredSize(
+          preferredSize: Size.fromHeight(80),
+          child: Container(
+            padding: EdgeInsets.all(16),
+            alignment: Alignment.centerLeft,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Hello",
+                  style: TextStyle(
+                    fontSize: 16, 
+                    color: Colors.white),
+                  ),
+                Text(
+                  user['fname'] + " " + user['lname'],
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ) : PreferredSize(preferredSize: Size.fromHeight(0), child: Container()),
       ),
       bottomNavigationBar: bottomBar(context),
       body: getTab()
@@ -62,7 +88,7 @@ class _DashboardState extends State<Dashboard> {
       return Profile();
     }
 
-    if (_selectedTab == _SelectedTab.home) return Home();
+    if (_selectedTab == _SelectedTab.home) return Home(user: this.user);
   }
 
   Widget bottomBar(BuildContext context) {
