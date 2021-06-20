@@ -5,13 +5,13 @@ class DummyData {
   Map defaultUser(){
     Map user = {
     "email": "lukevs@gmail.com",
-    "password": "miri<3pin@a",
+    "password": "P@ssw0rd",
     "fname": "Luke",
     "lname": "Villabado",
     "pic": "assets/images/031-meerkat.png",
     "dob": "11-11-2001",
     "scores":{
-      "General Knowledge": 130,
+      "General Knowledge": 1,
       "Music": 180,
       "Film": 235,
       "Video Games": 140,
