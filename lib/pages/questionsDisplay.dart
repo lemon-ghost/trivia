@@ -115,18 +115,6 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
           }, 
         ),
         ),
-        body: (answered == widget.questions.questionList.length)
-        ? buildResult(question: question, user: user)
-        : PageView.builder(
-        controller: controller,
-        physics:new NeverScrollableScrollPhysics(),
-        itemCount: widget.questions.questionList.length,
-        itemBuilder: (context, index) {
-          final Question question = widget.questions.questionList[index];
-          curPage = index;
-          return buildQuestion(question: question);
-        }, 
-      ),
     );
   }
   Widget buildResult({@required Question question, @required Map user}){
