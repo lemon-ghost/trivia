@@ -24,7 +24,6 @@ class QuestionsDisplay extends StatefulWidget {
 
 class _QuestionsDisplayState extends State<QuestionsDisplay> {
   Map user = {};
-  String convertedCateg = "";
   PageController controller;
   Question question;
   int curPage = 0;
@@ -154,7 +153,7 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          "Your best score: " + user['scores'][convertedCateg].toString(),
+                          "Your best score: " + user['scores'][convertCateg(question.category)].toString(),
                           style: TextStyle(
                             color: Constants.primaryDarker,
                             fontSize: 20, 
@@ -445,23 +444,8 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
     }
   }
 
-  String getComment(Question question) {
-    String comment = "";
-    double percent = correct/widget.questions.questionList.length;
-    
-    if(percent == 1) {
-      comment = "Congratulations you got a perfect score!";
-    } else if(percent < 1 && percent >= 0.8) {
-      comment = "Wow you did great!";
-    } else if(percent < 0.8 && percent >= 0.6) {
-      comment = "You did well!";
-    } else if(percent < 0.6 && percent >= 0.4) {
-      comment = "You can do better!";
-    } else {
-      comment = "You need more practice!";
-    }
-
-    convertedCateg = question.category;
+  String convertCateg(String category) {
+    String convertedCateg = question.category;
 
     switch(convertedCateg) {
       case "Entertainment: Music" :
@@ -477,12 +461,31 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
         break;
     }
 
-    if(score > user['scores'][convertedCateg]) {
+    return convertedCateg;
+  }
+  String getComment(Question question) {
+    String comment = "";
+    double percent = correct/widget.questions.questionList.length;
+    String convertedCategory = convertCateg(question.category);
+    
+    if(percent == 1) {
+      comment = "Congratulations you got a perfect score!";
+    } else if(percent < 1 && percent >= 0.8) {
+      comment = "Wow you did great!";
+    } else if(percent < 0.8 && percent >= 0.6) {
+      comment = "You did well!";
+    } else if(percent < 0.6 && percent >= 0.4) {
+      comment = "You can do better!";
+    } else {
+      comment = "You need more practice!";
+    }
+
+    if(score > user['scores'][convertedCategory]) {
       comment = "Congratulations you set a new high score!";
     }
 
-    if(score > user['scores'][convertedCateg]) {
-      user['scores'][convertedCateg] = score;
+    if(score > user['scores'][convertedCategory]) {
+      user['scores'][convertedCategory] = score;
     }
 
     return comment;

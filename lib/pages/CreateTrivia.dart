@@ -29,6 +29,8 @@ class _CreateTriviaState extends State<CreateTrivia> {
   double amount = 0, type = 0, difficulty = 0;
   bool err = false;
   String errMsg = "";
+  bool loading = false;
+  bool clicked = false;
 
   List amountList = [
     "10",
@@ -82,7 +84,9 @@ class _CreateTriviaState extends State<CreateTrivia> {
             )
           ),
         ),
-        body: SafeArea(
+        body: (loading && clicked)
+        ? Loading()
+        :SafeArea(
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(15),
@@ -263,10 +267,17 @@ class _CreateTriviaState extends State<CreateTrivia> {
                       url = "https://opentdb.com/api.php?"+amtTemp+categoryTemp+diffTemp+typeTemp;
                       print(url);
 
+                      setState((){
+                        loading = true;
+                        clicked = true;
+                      });
+                      
+
                       getQuestions(url).then((Questions result) {
                         print(result.questionList.length);
                         setState(() {
                           questions = result;
+                          loading = false;
                         });
                         if(result.responseCode == 1) {
                           err = true;
