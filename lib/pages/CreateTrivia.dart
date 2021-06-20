@@ -27,6 +27,8 @@ class _CreateTriviaState extends State<CreateTrivia> {
   String url = "";
   String category;
   double amount = 0, type = 0, difficulty = 0;
+  bool err = false;
+  String errMsg = "";
 
   List amountList = [
     "10",
@@ -266,6 +268,11 @@ class _CreateTriviaState extends State<CreateTrivia> {
                         setState(() {
                           questions = result;
                         });
+                        if(result.responseCode == 1) {
+                          err = true;
+                          errMsg = "There is not enough questions. Please change the parameters.";
+                          return;
+                        }
                         Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
                           QuestionsDisplay(
@@ -277,6 +284,20 @@ class _CreateTriviaState extends State<CreateTrivia> {
                     },
                     child: Text("Create Trivia!"),
                   ),
+                  (err)
+                    ? Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Center(
+                        child: Text(
+                          errMsg,
+                          style: TextStyle(
+                            color: Constants.fail,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    )
+                    : Text("")
                 ],
               ),
             ),

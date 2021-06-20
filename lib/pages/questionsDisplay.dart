@@ -24,6 +24,7 @@ class QuestionsDisplay extends StatefulWidget {
 
 class _QuestionsDisplayState extends State<QuestionsDisplay> {
   Map user = {};
+  String convertedCateg = "";
   PageController controller;
   Question question;
   int curPage = 0;
@@ -152,7 +153,7 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          "Your best score: " + user['scores'][question.category].toString(),
+                          "Your best score: " + user['scores'][convertedCateg].toString(),
                           style: TextStyle(
                             color: Constants.primaryDarker,
                             fontSize: 20, 
@@ -251,7 +252,7 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
                       ),
                     )
                   ),
-                  Text(curPage.toString()),
+                  Text((curPage+1).toString()),
                   GestureDetector(
                     onTap: () {
                       if(curPage < widget.questions.questionList.length-1) {
@@ -360,7 +361,7 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
         decoration: BoxDecoration(
           color: optionColor,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Constants.primaryDarker),
+          border: Border.all(color: Colors.black45),
         ),
         child: Column(
           children: [
@@ -392,12 +393,12 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
     final isSelected = option == question.selectedOption;
 
     if (!isSelected) {
-      return Constants.accentColor;
+      return Constants.scaffdarker;
     } else {
       if(question.isLocked) {
         return option.isCorrect? Constants.pass : Constants.fail;
       }
-      return Constants.scaffdarker;
+      return Constants.accentColor;
     }
   }
 
@@ -433,7 +434,7 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
   }
 
   String getComment(Question question) {
-    String comment;
+    String comment = "";
     double percent = correct/widget.questions.questionList.length;
     
     if(percent == 1) {
@@ -448,12 +449,28 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
       comment = "You need more practice!";
     }
 
-    if(score > user['scores'][question.category]) {
+    convertedCateg = question.category;
+
+    switch(convertedCateg) {
+      case "Entertainment: Music" :
+        convertedCateg = "Music";
+        break;
+      case "Entertainment: Film":
+        convertedCateg = "Film";
+        break;
+      case "Entertainment: Video Games":
+        convertedCateg = "Video Games";
+        break;
+      default:
+        break;
+    }
+
+    if(score > user['scores'][convertedCateg]) {
       comment = "Congratulations you set a new high score!";
     }
 
-    if(score > user['scores'][question.category]) {
-      user['scores'][question.category] = score;
+    if(score > user['scores'][convertedCateg]) {
+      user['scores'][convertedCateg] = score;
     }
 
     return comment;
