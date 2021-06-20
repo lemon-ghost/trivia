@@ -3,7 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:trivia/model/option.dart';
 import 'package:trivia/model/question.dart';
 import 'package:trivia/model/questions.dart';
+import 'package:trivia/utils/Constants.dart';
 import 'package:trivia/utils/util.dart';
+import 'package:trivia/widgets/BackModal.dart';
 
 class QuestionsDisplay extends StatefulWidget {
   final Questions questions;
@@ -40,64 +42,73 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-        leading: null,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-            "Answer!",
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w500,
-            )
-          ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(80),
-          child: Container(
-            padding: EdgeInsets.all(16),
-            alignment: Alignment.centerLeft,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: ListTile(
-                      title: Text(
-                        user['fname'] + " " + user['lname'],
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        )                         
-                      ),
-                      subtitle: Text(
-                        "Score: $score",
-                        style: TextStyle(
-                          fontSize: 16, 
-                          color: Colors.white),
+    return WillPopScope(
+      onWillPop: () {
+        return showDialog(
+            context: context,
+            builder: (context) {
+              return BackModal(title: "Exit Quiz?",description: "Your progress will not be saved. Are you sure?");
+            });
+      }, child: Scaffold(
+          backgroundColor: Constants.scaffoldBackgroundColor,
+          appBar: AppBar(
+          leading: null,
+          elevation: 0,
+          centerTitle: true,
+          title: Text(
+              "Answer!",
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w500,
+              )
+            ),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(80),
+            child: Container(
+              padding: EdgeInsets.all(16),
+              alignment: Alignment.centerLeft,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: ListTile(
+                        title: Text(
+                          user['fname'] + " " + user['lname'],
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          )                         
                         ),
-                      trailing: CircleAvatar(
-                        child: Image.asset('assets/images/fox.png'),
-                        radius: 35.0,
+                        subtitle: Text(
+                          "Score: $score",
+                          style: TextStyle(
+                            fontSize: 15, 
+                            color: Colors.white),
+                          ),
+                        trailing: CircleAvatar(
+                          child: Image.asset(user["pic"]),
+                          radius: 25.0,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
+          ),
+          body: PageView.builder(
+          controller: controller,
+          physics:new NeverScrollableScrollPhysics(),
+          itemCount: widget.questions.questionList.length,
+          itemBuilder: (context, index) {
+            final Question question = widget.questions.questionList[index];
+            curPage = index;
+            return buildQuestion(question: question);
+          }, 
         ),
-        ),
-        body: PageView.builder(
-        controller: controller,
-        physics:new NeverScrollableScrollPhysics(),
-        itemCount: widget.questions.questionList.length,
-        itemBuilder: (context, index) {
-          final Question question = widget.questions.questionList[index];
-          curPage = index;
-          return buildQuestion(question: question);
-        }, 
       ),
     );
   }
@@ -110,9 +121,9 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SizedBox(
-            height: 44,
+            height: 30,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal:8),
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal:8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -124,10 +135,11 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
                     },
                     child: Text("Previous",
                       style: TextStyle(
-                        fontWeight: FontWeight.w400,
+                        fontSize: 18.0,
                       ),
                     )
                   ),
+                  Text(curPage.toString()),
                   GestureDetector(
                     onTap: () {
                       if(curPage < widget.questions.questionList.length-1) {
@@ -136,7 +148,7 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
                     },
                     child: Text("Next",
                       style: TextStyle(
-                        fontWeight: FontWeight.w400,
+                        fontSize: 18.0,
                       ),
                     ),
                   ),
@@ -144,9 +156,10 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
               ),
             ),
           ),
+          SizedBox(height: 4),
           Text(
             question.question,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           SizedBox(height: 8),
           Text(
@@ -250,7 +263,7 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
       child: Row(children: [
         Text(
           option.letter,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
         ),
         SizedBox(width: 12),
         Flexible(
@@ -266,12 +279,12 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
     final isSelected = option == question.selectedOption;
 
     if (!isSelected) {
-      return Colors.grey.shade200;
+      return Constants.accentColor;
     } else {
       if(question.isLocked) {
-        return option.isCorrect? Colors.green : Colors.red;
+        return option.isCorrect? Constants.pass : Constants.fail;
       }
-      return Colors.grey.shade500;
+      return Constants.scaffdarker;
     }
   }
 

@@ -64,6 +64,7 @@ class _DashboardState extends State<Dashboard> {
         bottom: _selectedTab == _SelectedTab.home? PreferredSize(
           preferredSize: Size.fromHeight(80),
           child: Container(
+            color: Constants.scaffdarker,
             padding: EdgeInsets.all(16),
             alignment: Alignment.centerLeft,
             child: Column(
@@ -73,14 +74,14 @@ class _DashboardState extends State<Dashboard> {
                   "Hello",
                   style: TextStyle(
                     fontSize: 16, 
-                    color: Colors.white),
+                    color: Colors.black54),
                   ),
                 Text(
                   user['fname'] + " " + user['lname'],
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Constants.primaryColor,
                   ),
                 )
               ],
