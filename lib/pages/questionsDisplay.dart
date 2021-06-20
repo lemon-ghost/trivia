@@ -35,6 +35,7 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
   bool err = false;
   int score = 0;
   int correct = 0;
+  List answeredList = [];
 
   _QuestionsDisplayState({this.user});
   initState() {
@@ -243,6 +244,10 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
                   GestureDetector(
                     onTap: () {
                       if(curPage > 0) {
+                        if(question.isLocked && !answeredList.contains(curPage)) {
+                          answeredList.add(curPage);
+                          answered++;
+                        }
                         moveQuestion(index: --curPage, jump: true);
                       }
                     },
@@ -256,6 +261,10 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
                   GestureDetector(
                     onTap: () {
                       if(curPage < widget.questions.questionList.length-1) {
+                        if(question.isLocked && !answeredList.contains(curPage)) {
+                          answeredList.add(curPage);
+                          answered++;
+                        }
                         moveQuestion(index: ++curPage, jump: true);
                       }
                     },
@@ -295,7 +304,7 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              (err && !question.isLocked)? Text("Please choose an option.") : Text(""),
+              (err && !question.isLocked)? Text("Please choose an option.", style: TextStyle(color: Constants.fail)) : Text(""),
               Container(
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
@@ -318,7 +327,10 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
                             break;
                         }
                       }
-                      answered++;
+                      if(!answeredList.contains(curPage)) {
+                        answered++;
+                        answeredList.add(curPage);
+                      } 
                       moveQuestion(index: ++curPage, jump: true);
                      
                     } 
