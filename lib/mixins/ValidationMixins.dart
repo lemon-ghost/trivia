@@ -1,4 +1,7 @@
+import 'package:trivia/utils/DummyData.dart';
+
 class ValidationMixin{
+  DummyData temp;
 
   String validateEmail(String value){
     if(value.contains("@")){
@@ -29,12 +32,32 @@ class ValidationMixin{
     }
     return null;
   }
-  
-  String validateAddress(String value){
-    if(value.length >= 10){
-      return null;
+
+  String validateName2(String value){
+    if(value.isNotEmpty && value.length <= 3){
+      return "Name is too short.";
+    }else if(value.isNotEmpty && value.length >= 10){
+      return "Name is too long.";
     }
-    return "Address is too short.";
+    return null;
+  }
+
+//dummy data
+  String validateUser(Map value){
+    Map user = temp.defaultUser();
+
+    if(value["email"]==user["email"]){
+
+      if(value["password"]==user["password"]){
+
+        return null;
+      }
+
+      return "Incorrect Password";
+    }
+
+    return "Email not found";
+
   }
   
 }

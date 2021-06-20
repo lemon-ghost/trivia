@@ -23,12 +23,15 @@ class _RegistrationState extends State<Registration> with ValidationMixin {
   final TextEditingController passwordTextController = TextEditingController();
   final TextEditingController confirmPasswordTextController = TextEditingController();
   final TextEditingController birthDateTextController = TextEditingController();
-  bool obscureText = false;
+  bool obscureText = true;
   bool visibility = false;
 
   String user;
   DateTime _dateTime;
   String _travelDate;
+
+  
+  Map newUser = {};
 
   void initState() {
     super.initState();
@@ -178,7 +181,9 @@ class _RegistrationState extends State<Registration> with ValidationMixin {
     if (formKey.currentState.validate()) {
       if (validateSamePassword(
           passwordTextController.text, confirmPasswordTextController.text)) {
-        Navigator.pushNamed(context, Dashboard.routeName);
+        makenewAcc();
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Dashboard(user: this.newUser,fromProf: false)));
+        //Navigator.pushNamed(context, Dashboard.routeName);
         visibility = false;
       } else {
         print("yes?");
@@ -201,6 +206,29 @@ class _RegistrationState extends State<Registration> with ValidationMixin {
         });
       }
     }
+  }
+
+  void makenewAcc(){
+    setState(() {
+      newUser = {
+        "email": emailTextController.text,
+        "password": passwordTextController.text,
+        "fname": firstNameTextController.text,
+        "lname": lastNameTextController.text,
+        "dob": birthDateTextController.text,
+        "pic": "assets/images/026-penguin.png",
+        "scores":{
+          "General Knowledge": 0,
+          "Music": 0,
+          "Film": 0,
+          "Video Games": 0,
+          "History": 0,
+          "Science & Nature": 0,
+          "Mythology": 0,
+          "Animals": 0
+        }
+      };
+    });
   }
 
   void navigateToLogin(BuildContext context) {
