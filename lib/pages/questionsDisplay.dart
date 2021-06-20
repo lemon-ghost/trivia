@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:trivia/model/option.dart';
 import 'package:trivia/model/question.dart';
 import 'package:trivia/model/questions.dart';
+import 'package:trivia/pages/Dashboard.dart';
 import 'package:trivia/utils/Constants.dart';
 import 'package:trivia/utils/util.dart';
 import 'package:trivia/widgets/BackModal.dart';
@@ -32,6 +33,7 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
   var optionColor;
   bool err = false;
   int score = 0;
+  int correct = 0;
 
   _QuestionsDisplayState({this.user});
   initState() {
@@ -42,7 +44,7 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
   }
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return  WillPopScope(
       onWillPop: () {
         return showDialog(
             context: context,
@@ -50,46 +52,47 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
               return BackModal(title: "Exit Quiz?",description: "Your progress will not be saved. Are you sure?");
             });
       }, child: Scaffold(
-          backgroundColor: Constants.scaffoldBackgroundColor,
-          appBar: AppBar(
-          leading: null,
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-              "Answer!",
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w500,
-              )
-            ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(80),
-            child: Container(
-              padding: EdgeInsets.all(16),
-              alignment: Alignment.centerLeft,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: ListTile(
-                        title: Text(
-                          user['fname'] + " " + user['lname'],
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          )                         
-                        ),
-                        subtitle: Text(
-                          "Score: $score",
-                          style: TextStyle(
-                            fontSize: 15, 
-                            color: Colors.white),
+        backgroundColor: Constants.scaffoldBackgroundColor,
+        appBar: AppBar(
+        leading: null,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+            "Answer!",
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w500,
+            )
+          ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(80),
+          child: Container(
+            padding: EdgeInsets.all(16),
+            alignment: Alignment.centerLeft,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: ListTile(
+                      title: Text(
+                        user['fname'] + " " + user['lname'],
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        )                         
+                      ),
+                      subtitle: Text(
+                        "Score: $score",
+                        style: TextStyle(
+                          fontSize: 16, 
+                          color: Colors.white),
                           ),
                         trailing: CircleAvatar(
                           child: Image.asset(user["pic"]),
                           radius: 25.0,
+
                         ),
                       ),
                     ),
@@ -99,7 +102,9 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
             ),
           ),
           ),
-          body: PageView.builder(
+          body: (answered == widget.questions.questionList.length)
+            ? buildResult(question: question, user: user)
+            : PageView.builder(
           controller: controller,
           physics:new NeverScrollableScrollPhysics(),
           itemCount: widget.questions.questionList.length,
@@ -109,10 +114,129 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
             return buildQuestion(question: question);
           }, 
         ),
+        ),
+        body: (answered == widget.questions.questionList.length)
+        ? buildResult(question: question, user: user)
+        : PageView.builder(
+        controller: controller,
+        physics:new NeverScrollableScrollPhysics(),
+        itemCount: widget.questions.questionList.length,
+        itemBuilder: (context, index) {
+          final Question question = widget.questions.questionList[index];
+          curPage = index;
+          return buildQuestion(question: question);
+        }, 
       ),
     );
   }
-
+  Widget buildResult({@required Question question, @required Map user}){
+    return Container(
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 80),
+            Stack(
+              clipBehavior: Clip.none,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    width: double.infinity,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      color: Constants.scaffdarker,
+                      border: Border.all(
+                        color: Constants.primaryDarker,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: 80),
+                        Text(
+                          "Your score: " + score.toString(),
+                          style: TextStyle(
+                            color: Constants.primaryColor, 
+                            fontSize: 30, 
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Your best score: " + user['scores'][question.category].toString(),
+                          style: TextStyle(
+                            color: Constants.primaryDarker,
+                            fontSize: 20, 
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Flexible(
+                          child: Text(
+                            getComment(question),
+                            style: TextStyle(
+                              color: Colors.black, 
+                              fontSize: 24, 
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                    left: 0, 
+                    right: 0, 
+                    top: -30,
+                    child: Center(
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Constants.scaffdarker,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                        "$correct / " + widget.questions.questionList.length.toString(),
+                        style: TextStyle(
+                          color: Constants.primaryColor, 
+                          fontSize: 25, 
+                          fontWeight: FontWeight.w600,
+                        ),
+                        ),
+                      )
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            ElevatedButton(
+              onPressed: (){
+                Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                        Dashboard(
+                          user: user,
+                          fromProf: false,
+                        )
+                      ));
+              },
+              child: Text("Home"),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(90, 35),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
   Widget buildQuestion({
     @required Question question}) {
     return Container(
@@ -182,13 +306,15 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              (err)? Text("Please choose an option.") : Text(""),
+              (err && !question.isLocked)? Text("Please choose an option.") : Text(""),
               Container(
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
-                  onPressed: () {             
+                  onPressed: () {
+                    if(answered == widget.questions.questionList.length-1) answered++;       
                     if(curPage < widget.questions.questionList.length-1 && question.isLocked) {
                       if(question.selectedOption.isCorrect) {
+                        correct++;
                         switch (question.difficulty) {
                           case "easy":
                             score+=1;
@@ -203,12 +329,10 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
                             break;
                         }
                       }
-                      moveQuestion(index: ++curPage, jump: true);
                       answered++;
-                      print(answered);
-                      print(widget.questions.questionList.length);
-                    }
-
+                      moveQuestion(index: ++curPage, jump: true);
+                     
+                    } 
                     setState(() {
                       optionColor = (selectedOption != null && selectedOption.isCorrect) ? Colors.green : Colors.red;
                     });
@@ -219,8 +343,8 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
                       
                     } else {
                       err = true;
-                      
                     }
+                    print(answered);
                   },
                   child: (answered == widget.questions.questionList.length-1)
                     ? Text("Finish")
@@ -248,6 +372,7 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
         decoration: BoxDecoration(
           color: optionColor,
           borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Constants.primaryDarker),
         ),
         child: Column(
           children: [
@@ -317,5 +442,32 @@ class _QuestionsDisplayState extends State<QuestionsDisplay> {
     if(jump) {
       controller.jumpToPage(indexPage);
     }
+  }
+
+  String getComment(Question question) {
+    String comment;
+    double percent = correct/widget.questions.questionList.length;
+    
+    if(percent == 1) {
+      comment = "Congratulations you got a perfect score!";
+    } else if(percent < 1 && percent >= 0.8) {
+      comment = "Wow you did great!";
+    } else if(percent < 0.8 && percent >= 0.6) {
+      comment = "You did well!";
+    } else if(percent < 0.6 && percent >= 0.4) {
+      comment = "You can do better!";
+    } else {
+      comment = "You need more practice!";
+    }
+
+    if(score > user['scores'][question.category]) {
+      comment = "Congratulations you set a new high score!";
+    }
+
+    if(score > user['scores'][question.category]) {
+      user['scores'][question.category] = score;
+    }
+
+    return comment;
   }
 }
