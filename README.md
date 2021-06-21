@@ -16,7 +16,9 @@ API used: https://opentdb.com/api_config.php
 Phone Resolution: 1080 x 2340: xxhdpi
 
 Log In Credentials:
+
   email: lukevs@gmail.com
+
   password: P@ssw0rd
 
 ## Getting Started
