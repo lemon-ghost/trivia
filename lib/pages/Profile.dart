@@ -288,7 +288,7 @@ class _ProfileState extends State<Profile> with DummyData, ValidationMixin{
     
     if(formKey.currentState.validate()){
       print("user after prof edit: $user");
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Dashboard(user: this.user,fromProf: true)));
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Dashboard(user: this.user,fromProf: true)), (route) => false);
       //Navigator.pop(context);
     } else {
       print("Invalid Inputs");
