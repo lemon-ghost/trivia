@@ -3,9 +3,14 @@
 Flutter project for CIS 2203 - Mobile Development Exam.
 
 Made by:
+
 Colina, Luke Abram
+
 Sabado, Janie Lane
+
 Villaflor, Liam Matthew
+
+
 
 Name of App: Trivia!
 
@@ -18,7 +23,7 @@ Phone Resolution: 1080 x 2340: xxhdpi
 Log In Credentials:
 
   email: lukevs@gmail.com
-
+  
   password: P@ssw0rd
 
 ## Getting Started
